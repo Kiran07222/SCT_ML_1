@@ -1,6 +1,8 @@
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
 import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
@@ -69,3 +71,40 @@ sample_prediction = model.predict(sample_house_scaled)
 print("<------------------------------------------------------------------->\n")
 print(f"predicted score is : ${sample_prediction[0]:.2f}") 
 print("<------------------------------------------------------------------->\n")
+
+save_path = r"C:\Users\nani3\Desktop"
+
+# Graph 1: Actual vs Predicted Prices
+plt.figure(figsize=(8, 6))
+plt.scatter(y_val, y_pred_val)
+plt.xlabel("Actual Sale Price")
+plt.ylabel("Predicted Sale Price")
+plt.title("Actual vs Predicted House Prices")
+plt.plot([y_val.min(), y_val.max()], [y_val.min(), y_val.max()])
+plt.savefig(f"{save_path}\\actual_vs_predicted.png")
+plt.close()
+
+# Graph 2: Error Distribution
+errors = y_val - y_pred_val
+
+plt.figure(figsize=(8, 6))
+plt.hist(errors, bins=30)
+plt.xlabel("Prediction Error")
+plt.ylabel("Frequency")
+plt.title("Error Distribution")
+plt.savefig(f"{save_path}\\error_distribution.png")
+plt.close()
+
+# Graph 3: Feature Coefficients
+features = ['TotalSF', 'BedroomAbvGr', 'TotalBath']
+coefficients = model.coef_
+
+plt.figure(figsize=(8, 6))
+plt.bar(features, coefficients)
+plt.xlabel("Features")
+plt.ylabel("Coefficient Value")
+plt.title("Linear Regression Feature Coefficients")
+plt.savefig(f"{save_path}\\feature_coefficients.png")
+plt.close()
+
+print("\nGraphs saved successfully!")
